@@ -22,4 +22,4 @@
 ### Durable:
 Khi RabbitMQ bị restart hoặc crash app thì cần đảm bảo các queue vẫn tồn tại. Ta sẽ set durable = true khi khởi tạo queue bên consomer. (**Lưu ý rằng tham số này chỉ đảm bảo queue chứ không đảm bảo message trong queue**)
 ### Persistent:
-Khi RabbitMQ bị restart hoặc crash app thì cần đảm bảo message trong queue vẫn còn tồn tại (yêu cầu queue phải đc set durable = true). Khi này ta set persistent = true khi gửi message (procedure send message) đảm bảo dữ liệu message ko bị mất khi RabbitMQ bị crash hoặc restart.
+Khi RabbitMQ bị restart hoặc crash app thì cần đảm bảo message trong queue vẫn còn tồn tại (yêu cầu queue phải đc set durable = true). Khi này ta set persistent = true khi gửi message (procedure send message) đảm bảo dữ liệu message ko bị mất khi RabbitMQ bị crash hoặc restart. (Dữ liệu message được lưa vào ổ đĩa)
