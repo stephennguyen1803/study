@@ -14,3 +14,12 @@
 - RabbitMQ dễ mất message hơn Kafka
 - Độ tin cậy dữ liệu của RabitMQ cao hơn Kafka
 - Tốc độ (độ trễ thấp) RabitMQ tốn hơn Kafka
+## RabitMQ chi tiết các thông số cần thiết
+### NoAck
+(cơ chế xác định message đã đc consomer xử lý xong để RabitMQ sẽ xóa khỏi hàng đợi để ko gửi lại lần sau -> noAck). noAck = true Được set ở consomer để thông báo cho RabbitMQ là consomer đã xử lý xong và có thể xóa message ra khỏi queue.
+### TTL
+Để tránh trường hợp consomer không thông báo kết qủa khi xử lý message.Dữ liệu message tồn tại hoài trong queue -> cần giải phóng khỏi queue để xử lý tiếp. Ta cần set expiration trong procedure gửi message(time to live -> Message được tồn tại trong một khoảng thời gian -> được set khi procedure gửi dữ liệu -> expiration)
+### Durable:
+Khi RabbitMQ bị restart hoặc crash app thì cần đảm bảo các queue vẫn tồn tại. Ta sẽ set durable = true khi khởi tạo queue bên consomer. (**Lưu ý rằng tham số này chỉ đảm bảo queue chứ không đảm bảo message trong queue**)
+### Persistent:
+Khi RabbitMQ bị restart hoặc crash app thì cần đảm bảo message trong queue vẫn còn tồn tại (yêu cầu queue phải đc set durable = true). Khi này ta set persistent = true khi gửi message (procedure send message) đảm bảo dữ liệu message ko bị mất khi RabbitMQ bị crash hoặc restart.
