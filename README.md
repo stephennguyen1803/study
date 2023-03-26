@@ -17,9 +17,11 @@
 ## RabitMQ chi tiết các thông số cần thiết
 ### NoAck
 (cơ chế xác định message đã đc consomer xử lý xong để RabitMQ sẽ xóa khỏi hàng đợi để ko gửi lại lần sau -> noAck). noAck = true Được set ở consomer để thông báo cho RabbitMQ là consomer đã xử lý xong và có thể xóa message ra khỏi queue.
-### TTL
+Một số chú ý. Khi consumer cần xử lý xong message mới nhận message mới có thể define **chanel.prefetch(1)** để đảm bảo consumer chỉ nhật 1 message. Khi nào xử lý xong mới nhận message mới.
+Còn có thể sử dụng **channel.ack(msg)** tương tự với viết set **noAck = true **
+ ### TTL
 Để tránh trường hợp consomer không thông báo kết qủa khi xử lý message.Dữ liệu message tồn tại hoài trong queue -> cần giải phóng khỏi queue để xử lý tiếp. Ta cần set expiration trong procedure gửi message(time to live -> Message được tồn tại trong một khoảng thời gian -> được set khi procedure gửi dữ liệu -> expiration)
 ### Durable:
-Khi RabbitMQ bị restart hoặc crash app thì cần đảm bảo các queue vẫn tồn tại. Ta sẽ set durable = true khi khởi tạo queue bên consomer. (**Lưu ý rằng tham số này chỉ đảm bảo queue chứ không đảm bảo message trong queue**)
+Khi RabbitMQ bị restart hoặc crash app thì cần đảm bảo các queue vẫn tồn tại. Ta sẽ set durable = true khi khởi tạo queue bên consomer. (**Lưu ý rằng tham số này chỉ đảm bảo queue chứ không đảm bảo message trong queue**). Đồng thời queue này phải được set đồng nhất ở cả procedure và consomer. Tức là nếu procedure set **durable = true** thì consomer cũng phải set queue này **durable = true**
 ### Persistent:
 Khi RabbitMQ bị restart hoặc crash app thì cần đảm bảo message trong queue vẫn còn tồn tại (yêu cầu queue phải đc set durable = true). Khi này ta set persistent = true khi gửi message (procedure send message) đảm bảo dữ liệu message ko bị mất khi RabbitMQ bị crash hoặc restart. (Dữ liệu message được lưa vào ổ đĩa)
