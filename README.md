@@ -18,7 +18,7 @@
 ### NoAck
 (cơ chế xác định message đã đc consomer xử lý xong để RabitMQ sẽ xóa khỏi hàng đợi để ko gửi lại lần sau -> noAck). noAck = true Được set ở consomer để thông báo cho RabbitMQ là consomer đã xử lý xong và có thể xóa message ra khỏi queue.
 Một số chú ý. Khi consumer cần xử lý xong message mới nhận message mới có thể define **chanel.prefetch(1)** để đảm bảo consumer chỉ nhật 1 message. Khi nào xử lý xong mới nhận message mới.
-Còn có thể sử dụng **channel.ack(msg)** tương tự với viết set **noAck = true **
+Còn có thể sử dụng **channel.ack(msg)** tương tự với viết set **noAck = true**
  ### TTL
 Để tránh trường hợp consomer không thông báo kết qủa khi xử lý message.Dữ liệu message tồn tại hoài trong queue -> cần giải phóng khỏi queue để xử lý tiếp. Ta cần set expiration trong procedure gửi message(time to live -> Message được tồn tại trong một khoảng thời gian -> được set khi procedure gửi dữ liệu -> expiration)
 ### Durable:
