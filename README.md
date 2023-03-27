@@ -25,3 +25,8 @@ Còn có thể sử dụng **channel.ack(msg)** tương tự với viết set **
 Khi RabbitMQ bị restart hoặc crash app thì cần đảm bảo các queue vẫn tồn tại. Ta sẽ set durable = true khi khởi tạo queue bên consomer. (**Lưu ý rằng tham số này chỉ đảm bảo queue chứ không đảm bảo message trong queue**). Đồng thời queue này phải được set đồng nhất ở cả procedure và consomer. Tức là nếu procedure set **durable = true** thì consomer cũng phải set queue này **durable = true**
 ### Persistent:
 Khi RabbitMQ bị restart hoặc crash app thì cần đảm bảo message trong queue vẫn còn tồn tại (yêu cầu queue phải đc set durable = true). Khi này ta set persistent = true khi gửi message (procedure send message) đảm bảo dữ liệu message ko bị mất khi RabbitMQ bị crash hoặc restart. (Dữ liệu message được lưa vào ổ đĩa)
+## Publish Subscribe
+### Fanout Exchange: 
+**Exchange**: nằm chính giữa producer và queue
+**Binding**: nằm chỉnh giữa Exchange và queue (điều hướng đến queue)
+Gửi message đến tất cả các consumer đăng ký (exchange và queue). Một message tất cả các consumer đều nhận được
