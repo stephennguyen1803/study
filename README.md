@@ -30,3 +30,9 @@ Khi RabbitMQ bị restart hoặc crash app thì cần đảm bảo message trong
 - **Exchange**: nằm chính giữa producer và queue.
 - **Binding**: nằm chỉnh giữa Exchange và queue (điều hướng đến queue)
 - Gửi message đến tất cả các consumer đăng ký (exchange và queue). Một message tất cả các consumer đều nhận được
+### Topic Exchange
+- **Exchange**: nằm chính giữa producer và queue.
+- **Binding**: nằm chỉnh giữa Exchange và queue (điều hướng đến queue)
+- Quan trọng nhất là việc điều hướng đến các topic khác nhau. Dựa vào key của topic để có thể lựa chọn phù hợp.
+- `*`có nghĩa là phù hợp với bất kỳ từ nào trước dấu `.`(ví dụ nếu publish message có topic là **dev.test.leader**) thì các topic có được define **dev.test.leader**, **`*.test.*`**, **`*.*.leader`** sẽ nhận dc tin nhắn. Tuy nhiên **`*.leader`** sẽ ko nhận dc tin nhắn
+- `#` khớp với một hoặc nhiều từ bất kỳ với dấu `.` để detect (ví dụ nếu publish message có topic là **dev.test.leader**) thì các topic có được define **dev.#**, **#.leader** sẽ nhận đc message 
