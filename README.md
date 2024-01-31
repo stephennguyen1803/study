@@ -24,7 +24,11 @@ Còn có thể sử dụng **channel.ack(msg)** tương tự với viết set **
 ### Durable:
 Khi RabbitMQ bị restart hoặc crash app thì cần đảm bảo các queue vẫn tồn tại. Ta sẽ set durable = true khi khởi tạo queue bên consomer. (**Lưu ý rằng tham số này chỉ đảm bảo queue chứ không đảm bảo message trong queue**). Đồng thời queue này phải được set đồng nhất ở cả procedure và consomer. Tức là nếu procedure set **durable = true** thì consomer cũng phải set queue này **durable = true**
 ### Persistent:
-Khi RabbitMQ bị restart hoặc crash app thì cần đảm bảo message trong queue vẫn còn tồn tại (yêu cầu queue phải đc set durable = true). Khi này ta set persistent = true khi gửi message (procedure send message) đảm bảo dữ liệu message ko bị mất khi RabbitMQ bị crash hoặc restart. (Dữ liệu message được lưa vào ổ đĩa)
+Khi RabbitMQ bị restart hoặc crash app thì cần đảm bảo message trong queue vẫn còn tồn tại (yêu cầu queue phải đc set durable = true). Khi này ta set persistent = true khi gửi message (procedure send message) đảm bảo dữ liệu message ko bị mất khi RabbitMQ bị crash hoặc restart. (Dữ liệu message được lưa vào ổ đĩa).
+### Round Robin:
+RabbitMQ hiện tại đang sử dụng thuật toán Round Robin khi có nhiều consumer cùng chạy (cùng 1 cosumer đó nhưng chạy trên nhiều instance) thì message sẽ đc gửi lần lượt cho các consumer. (Thuật toán Round Robin là thuật toán lựa chọn các máy chủ theo một trình tự nhất định. Load balancer sẽ bắt đầu từ máy chủ số 1 tương ứng trong danh sách, và Load balancer sẽ di chuyển dần đến hết danh sách theo thứ tự. Khi đến trang cuối cùng thì Load balancer sẽ bắt đầu lại.).
+### Consumer Prefetch:
+Được sử dụng để giới hạn số message mà consumer nhận và xử lý.
 ## Publish Subscribe
 ### Fanout Exchange: 
 - **Exchange**: nằm chính giữa producer và queue.
