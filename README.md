@@ -34,7 +34,11 @@ RabbitMQ hiện tại đang sử dụng thuật toán Round Robin khi có nhiề
 - **Exchange**: nằm chính giữa producer và queue.
 - **Binding**: nằm chỉnh giữa Exchange và queue (điều hướng đến queue)
 - Gửi message đến tất cả các consumer đăng ký (exchange và queue). Một message tất cả các consumer đều nhận được
-### Topic Exchange
+### Direct Exchange:
+- **Exchange**: nằm chính giữa producer và queue.
+- **Binding**: nằm chỉnh giữa Exchange và queue (điều hướng đến queue).
+- Gửi message chính xác các queue đã đăng ký binding key. Bắt buộc Exchange phải gửi message chính xác theo binding key. Consumer sẽ dựa vào đó để nhận message. Ví dụ ta publish mesage vô exchange có tên là **`send_message_direct`** và có **`routing_key`** là dev. Ở cosumer ta có 1 queue đang binding key theo ba từ khoá (dev, qc, leader) và 1 queue khác chỉ có từ khoá là dev. Khi này cá 2 consumer đều nhận dc message. Tuy nhiên nếu ở publish ta sử dụng **`routing_key`** là leader thì chỉ có 1 consumer 1 là nhận dc message. Nói đơn giản là **`routing_key`** phải giống nhau ở cả publisher và consumer.
+### Topic Exchange:
 - **Exchange**: nằm chính giữa producer và queue.
 - **Binding**: nằm chỉnh giữa Exchange và queue (điều hướng đến queue)
 - Quan trọng nhất là việc điều hướng đến các topic khác nhau. Dựa vào key của topic để có thể lựa chọn phù hợp.
