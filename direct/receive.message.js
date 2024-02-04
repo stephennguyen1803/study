@@ -1,27 +1,26 @@
 const amqplib = require('amqplib')
-//.env
-const amqp_url_cloud = 'amqps://cqgdsuwe:yQHpwhA0cCal6O4oE-Zlo_Nqfv-GZ1pz@armadillo.rmq.cloudamqp.com/cqgdsuwe'
+const amqp_url_cloud = "amqps://cqgdsuwe:yQHpwhA0cCal6O4oE-Zlo_Nqfv-GZ1pz@armadillo.rmq.cloudamqp.com/cqgdsuwe";
 
-const receiveEmail = async () => {
+const receiveMessage = async () => {
     try {
         //1.Create Connect   
         const conn = await amqplib.connect(amqp_url_cloud)
         //2. Create Channel
         const channel = await conn.createChannel()
         //3. Create exchange
-        const nameExchange = 'send_email'
+        const nameExchange = 'send_message_direct'
 
-        await channel.assertExchange(nameExchange, 'topic', {
-            durable: false
+        await channel.assertExchange(nameExchange, 'direct', {
+            durable: true
         })
-        
+
         //4. Create queue
         const {
             queue
         } = await channel.assertQueue('', {
-            exclusive:true
+            exclusive: true
         })
-        
+
         console.log(`nameQueue::${queue}`)
 
         //5. Binding (moi quan he giua exchange va queue goi la binding)
@@ -30,17 +29,13 @@ const receiveEmail = async () => {
             process.exit(0)
         }
 
-        /*
-            * có nghĩa là phù hợp với bất kỳ từ nào
-            # khớp với một hoặc nhiều từ bất kỳ
-        */
-        console.info(`waiting queue ${queue}:::: topic::${args}`)
-        
+        console.info(`waiting queue ${queue}:::: rountingKey::${args}`)
         args.forEach(async key => {
+            console.log(`key::${key}`)
             await channel.bindQueue(queue, nameExchange, key)
         });
 
-        await channel.consume( queue, msg => {
+        await channel.consume(queue, msg => {
             console.log(`Routing key:${msg.fields.routingKey}::: msg::`, msg.content.toString())
             channel.ack(msg)
         })
@@ -48,4 +43,5 @@ const receiveEmail = async () => {
         console.error(error.message)
     }
 }
-receiveEmail()
+
+receiveMessage()
